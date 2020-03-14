@@ -1,0 +1,26 @@
+{
+  "name": "tgsp-shared",
+  "version": "1.0.0",
+  "description": "A package with shared functionality for TGSP websites and apps",
+  "scripts": {
+    "test": "node --experimental-modules ./node_modules/.bin/mocha tests/**.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fellow-worker/tgsp-shared.git"
+  },
+  "author": "Fellow Worker",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fellow-worker/tgsp-shared/issues"
+  },
+  "homepage": "https://github.com/fellow-worker/tgsp-shared#readme",
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^7.1.0"
+  },
+  "type": "module",
+  "dependencies": {
+    "valid-url": "^1.0.9"
+  }
+}
