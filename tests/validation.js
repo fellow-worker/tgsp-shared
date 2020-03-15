@@ -1,9 +1,9 @@
 import chai from 'chai';
-import * as validation from '../src/validation.js';
+import { validation } from '../src/index.js'
 
 describe('Validation Tests', () => {
 
-    it("isHttpsUri - Correct uri's" ,() => {
+    it("isHttpsUri - Correct uri" ,() => {
         chai.expect(validation.isHttpsUri("https://example.com") ).to.be.true;
         chai.expect(validation.isHttpsUri("https://example.com/") ).to.be.true;
         chai.expect(validation.isHttpsUri("https://example.com/test") ).to.be.true;
@@ -14,7 +14,7 @@ describe('Validation Tests', () => {
         chai.expect(validation.isHttpsUri("https://example.com:8001/test.phph") ).to.be.true;
     });
 
-    it("isHttpsUri - Incorrect uri's" ,() => {
+    it("isHttpsUri - Incorrect uri" ,() => {
         chai.expect(validation.isHttpsUri("http://example.com") ).to.be.false;
         chai.expect(validation.isHttpsUri("file://example.com") ).to.be.false;
         chai.expect(validation.isHttpsUri(this) ).to.be.false;
@@ -34,7 +34,7 @@ describe('Validation Tests', () => {
         chai.expect(validation.hasValue(undefined)).to.be.false;
     });
 
-    it("hasMinLenght - allowEmpty = true" ,() => {
+    it("hasMinLength - allowEmpty = true" ,() => {
         chai.expect(validation.hasMinLength("version",3)).to.be.true;
         chai.expect(validation.hasMinLength("ver",3)).to.be.true;
         chai.expect(validation.hasMinLength("ve",3)).to.be.false;
@@ -45,7 +45,7 @@ describe('Validation Tests', () => {
         chai.expect(validation.hasMinLength(undefined,3)).to.be.true;
     });
 
-    it("hasMinLenght - allowEmpty = false" ,() => {
+    it("hasMinLength - allowEmpty = false" ,() => {
         chai.expect(validation.hasMinLength("version",3, false)).to.be.true;
         chai.expect(validation.hasMinLength("ver",3, false)).to.be.true;
         chai.expect(validation.hasMinLength("ve",3, false)).to.be.false;
