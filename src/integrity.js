@@ -1,9 +1,9 @@
-// This module can be used to exchange datas that need some can of signing
+// This module can be used to exchange data that need some can of signing
 import crypto from 'crypto';
 
 /**
  * This method will create a signature for the given data and secret 
- * @param {*} data The data to create a signaure for
+ * @param {*} data The data to create a signature for
  * @param {String} secret The secret to use when creating the signature
  * @param {String} digest The digest to use (hex or base64), default is base64
  */
@@ -11,13 +11,13 @@ const createHash = (data, secret, digest = 'base64') => {
 
     const text = JSON.stringify(data);
     const buffer = Buffer.from(text, 'utf8');
-    const encryptor = crypto.createHmac('sha256', secret);
-    return encryptor.update(buffer).digest(digest); 
+    const encrypt = crypto.createHmac('sha256', secret);
+    return encrypt.update(buffer).digest(digest); 
 }
 
 /**
  * This method will sign data with a signature
- * @param {*} data The data to create a signaure for
+ * @param {*} data The data to create a signature for
  * @param {String} secret The secret to use when creating the signature
  * @param {String} digest The digest to use (hex or base64), default is base64
  */

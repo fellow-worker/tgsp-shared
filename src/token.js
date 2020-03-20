@@ -56,8 +56,8 @@ export const verifyData = (data, signature, publicKey) => {
  * @returns {String} A base64 uri-encoded has (so it can be used in headers and uri's)
  */
 export const hashData = (data, secret) => {
-    const data = JSON.stringify(data);
-    const hash = crypto.createHash('sha256').update(data).update(secret).digest("base64");
+
+    const hash = crypto.createHash('sha256').update(JSON.stringify(data)).update(secret).digest("base64");
     return encodeURIComponent(hash);
 }
 
@@ -72,33 +72,32 @@ export const validateHash = (data, hash, secret) => {
 }
 
 /**
- * This method will generate a token for a userId and role that can be user to logon
+ * This method will generate a token for a userId and role that is signed with a public key
  * @param {string|number} userId The id of the user
  * @param {string|array} roles The role of the user
  * @param {string|number} ip An identifier for the connection
- * @param {string} appId The id for the application this token is for
+ * @param {string} serviceId The id for the service this token is for
  * @param {String} privateKey The private key in a base64 format
  * @param {number} expires A unix time stamp at which moment the token expires
  * @return {string} A base64 string with the full token
  */
-export const getAccessToken = (userId, roles, ip, appId, expires, privateKey) => {
+export const getPublicPrivateKeyToken = (userId, roles, ip, serviceId, expires, privateKey) => {
 
     // create the data object and the signature
-    const data = { userId, roles, ip, appId, expires };
+    const data = { userId, roles, ip, serviceId, expires };
     const signature = signData(data, privateKey);
 
     // create the token object and from that a base64 string that uri encoded to it can be used as a bearer token
-    return encodeURIComponent(Buffer.from(JSON.stringify({ data: data, signature: signature })).toString('base64'));
+    return encodeURIComponent(Buffer.from(JSON.stringify({ data, signature })).toString('base64'));
 };
 
 /**
  * This method validate the token
  * @param {String} token The token that is provided by the user
  * @param {String} ip An identifier for the
- * @param {string} appId The id for the application this token should be bound to
  * @param {String} publicKey The public key in a base64 format. With this key it can be verified that the token by somebody who knows the private key
  */
-export const validateAccessToken = (token, ip, publicKey) => {
+export const validatePublicPrivateKeyToken = (token, ip, publicKey) => {
     try {
         // first reverse the token as it create
         const tokenObject = JSON.parse(Buffer.from(decodeURIComponent(token), 'base64').toString('utf-8'));
@@ -121,27 +120,25 @@ export const validateAccessToken = (token, ip, publicKey) => {
 };
 
 /**
- * This method will generate a key that an application can use to redirect back to the single sign on.
- * With this token an application can prove to the single sign on it is making a legit request.
- * This is short lived token (so it can be used in uri's and headers)
- * @param {String} appId The id of the application this token is for
+ * This method will generate a token that is hash with a secret key (synchronous encryption)
+ * @param {String} serviceId The id of the service this token is for
  * @param {String} ip The ip address of the user
  * @param {String} secret The secret to hash the token
+ * @param {number} expires A unix time stamp at which moment the token expires
  */
-export const getApplicationRequestToken = (appId, ip, secret) => {
-    const expires = secondsSinceEpoch() + 600;
-    const data = { appId, ip, expires };
+export const getSecretToken = (serviceId, ip, expires, secret) => {
+    const data = { serviceId, ip, expires };
     const token = { hash : hashData(data,secret), data : data }
     return encodeURIComponent(JSON.stringify(token));
 };
 
 /**
- * This method will validate a create application request token
+ * This method will validate that is secret using a secret key (synchronous encryption)
  * @param {String} token The created token
  * @param {String} ip The ip address of the user
  * @param {String} secret The secret that was used to hash the token
  */
-export const validateApplicationRequestToken = (token, ip, secret) => {
+export const validateSecretToken = (token, ip, secret) => {
     try {
         // convert the token back to the original data
         token = JSON.parse(decodeURIComponent(token));

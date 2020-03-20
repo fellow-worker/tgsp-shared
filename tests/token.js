@@ -1,4 +1,4 @@
-import { getAccessToken, validateToken, signData, verifyData, generatePublicPrivateKeys, secondsSinceEpoch } from '../src/token.js';
+import { getPublicPrivateKeyToken, validatePublicPrivateKeyToken, signData, verifyData, generatePublicPrivateKeys, secondsSinceEpoch } from '../src/token.js';
 import chai from 'chai';
 import { performance } from 'perf_hooks';
 
@@ -16,13 +16,13 @@ describe('token.js', () => {
         expect(verified).to.be.true;
     });
 
-     it('validateToken - valid token', async () => {
+     it('publicPrivateKeyToken - valid token', async () => {
         const { publicKey, privateKey } = await generatePublicPrivateKeys();
         
-        const token = getAccessToken( 2, 'admin', '127.0.0.1', 92, secondsSinceEpoch() + 1000, privateKey);
+        const token = getPublicPrivateKeyToken( 2, 'admin', '127.0.0.1', 92, secondsSinceEpoch() + 1000, privateKey);
 
         const start = performance.now();
-        const result = validateToken( token,'127.0.0.1',publicKey);
+        const result = validatePublicPrivateKeyToken( token,'127.0.0.1',publicKey);
         const end = performance.now();
 
         expect(end - start).to.be.lessThan(10);
@@ -31,28 +31,28 @@ describe('token.js', () => {
         expect(result.roles).to.eql('admin');
     });
 
-    it('validateToken - different ip', async () => {
+    it('publicPrivateKeyToken - different ip', async () => {
         const { publicKey, privateKey } = await generatePublicPrivateKeys();
 
-        const token = getAccessToken( 2, 'admin', '127.0.0.1', 92,  secondsSinceEpoch() + 1000, privateKey);
-        const result = validateToken( token,'128.0.0.1',publicKey);
+        const token = getPublicPrivateKeyToken( 2, 'admin', '127.0.0.1', 92,  secondsSinceEpoch() + 1000, privateKey);
+        const result = validatePublicPrivateKeyToken( token,'128.0.0.1',publicKey);
 
         expect(result.valid).to.false;
         expect(result.error).to.eql('ip address mismatch');
     });
 
-    it('validateToken - token format', async () => {
+    it('publicPrivateKeyToken - token format', async () => {
         const { publicKey } = await generatePublicPrivateKeys();
-        const result = validateToken('token','127.0.0.1',publicKey);
+        const result = validatePublicPrivateKeyToken('token','127.0.0.1',publicKey);
         expect(result.valid).to.false;
         expect(result.error).to.eql('token format incorrect');
     });
 
-    it('validateToken - token expired', async () => {
+    it('publicPrivateKeyToken - token expired', async () => {
 
         const { publicKey, privateKey } = await generatePublicPrivateKeys();
-        const token = getAccessToken( 2, 'admin', '127.0.0.1', 92,  secondsSinceEpoch() - 1000, privateKey);
-        const result = validateToken( token,'127.0.0.1',publicKey);
+        const token = getPublicPrivateKeyToken( 2, 'admin', '127.0.0.1', 92,  secondsSinceEpoch() - 1000, privateKey);
+        const result = validatePublicPrivateKeyToken( token,'127.0.0.1',publicKey);
 
         expect(result.valid).to.false;
         expect(result.error).to.eql('token expired');
