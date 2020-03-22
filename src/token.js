@@ -72,19 +72,19 @@ export const validateHash = (data, hash, secret) => {
 }
 
 /**
- * This method will generate a token for a userId and role that is signed with a public key
+ * This method will generate a token for a userId and permissions that is signed with a public key
  * @param {string|number} userId The id of the user
- * @param {string|array} roles The role of the user
+ * @param {string|array} permissions The permissions of the user
  * @param {string|number} ip An identifier for the connection
- * @param {string} serviceId The id for the service this token is for
+ * @param {string} serviceName The name for the service this token is for (this is a unique name)
  * @param {String} privateKey The private key in a base64 format
  * @param {number} expires A unix time stamp at which moment the token expires
  * @return {string} A base64 string with the full token
  */
-export const getPublicPrivateKeyToken = (userId, roles, ip, serviceId, expires, privateKey) => {
+export const getPublicPrivateKeyToken = (userId, permissions, ip, serviceName, expires, privateKey) => {
 
     // create the data object and the signature
-    const data = { userId, roles, ip, serviceId, expires };
+    const data = { userId, permissions, ip, serviceName, expires };
     const signature = signData(data, privateKey);
 
     // create the token object and from that a base64 string that uri encoded to it can be used as a bearer token
@@ -121,13 +121,13 @@ export const validatePublicPrivateKeyToken = (token, ip, publicKey) => {
 
 /**
  * This method will generate a token that is hash with a secret key (synchronous encryption)
- * @param {String} serviceId The id of the service this token is for
+ * @param {String} serviceName The id of the service this token is for
  * @param {String} ip The ip address of the user
  * @param {String} secret The secret to hash the token
  * @param {number} expires A unix time stamp at which moment the token expires
  */
-export const getSecretToken = (serviceId, ip, expires, secret) => {
-    const data = { serviceId, ip, expires };
+export const getSecretToken = (serviceName, ip, expires, secret) => {
+    const data = { serviceName, ip, expires };
     const token = { hash : hashData(data,secret), data : data }
     return encodeURIComponent(JSON.stringify(token));
 };

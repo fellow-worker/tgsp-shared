@@ -28,7 +28,7 @@ describe('token.js', () => {
         expect(end - start).to.be.lessThan(10);
         expect(result.valid).to.true;
         expect(result.userId).to.eql(2);
-        expect(result.roles).to.eql('admin');
+        expect(result.permissions).to.eql('admin');
     });
 
     it('publicPrivateKeyToken - different ip', async () => {

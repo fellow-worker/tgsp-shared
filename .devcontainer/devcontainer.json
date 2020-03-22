@@ -15,5 +15,5 @@
 	],
 
 	// Set some runtime arguments 
-	"runArgs": ["--name", "tgsp-shared"],
+	"runArgs": ["--name", "tgsp-shared-dev-container"],
 }
