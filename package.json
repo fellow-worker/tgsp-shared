@@ -1,6 +1,6 @@
 {
   "name": "tgsp-shared",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A package with shared functionality for TGSP websites and apps",
   "scripts": {
     "test": "node --experimental-modules ./node_modules/.bin/mocha tests/**.js"
