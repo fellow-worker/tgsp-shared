@@ -87,4 +87,20 @@ describe('Validation Tests', () => {
         chai.expect(validation.isEmail("text@example.com")).to.be.true;
     });
 
+    it("validate - regexp rule", () => {
+        const rules = [ { prop: "name", name: "regexp", regexp: /^[a-z-]+$/ }, ];
+        
+        let result = validation.validate({ name : "aaz" }, rules);
+        chai.expect(result.hasErrors).to.be.false;
+
+        result = validation.validate({ name : "aaz1" }, rules);
+        chai.expect(result.hasErrors).to.be.true;
+
+        result = validation.validate({ name : "aaz-" }, rules);
+        chai.expect(result.hasErrors).to.be.false;
+
+        result = validation.validate({ name : ",aaz" }, rules);
+        chai.expect(result.hasErrors).to.be.true;
+    })
+
 });

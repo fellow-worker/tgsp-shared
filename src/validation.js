@@ -98,7 +98,7 @@ export const isUrl = (value) => {
 /**
  * this method validate rules on an object
  */
-const validate = (value, rules) => {
+export const validate = (value, rules) => {
     const result = { hasErrors: false, errors: {} };
     rules.forEach(rule => {
         let valid = false;
@@ -121,6 +121,9 @@ const validate = (value, rules) => {
             case "type":
                 valid = hasType(value[rule.prop], rule.type);
                 break;
+            case "regexp" : 
+                const regex = new RegExp(rule.regexp);    
+                valid = regex.test(value[rule.prop]);
             default:
                 break;
         }
