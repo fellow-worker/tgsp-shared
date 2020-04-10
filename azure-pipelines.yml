@@ -1,5 +1,8 @@
 trigger: none
 
+pool:
+  vmImage: 'windows-latest'
+
 variables:
   tag: '$(Build.BuildId)'
 
@@ -12,6 +15,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
+    arguments: '-p:PackageVersion=0.$(Build.BuildId).0'
   displayName: 'dotnet build'
 
 - task: DotNetCoreCLI@2
@@ -19,3 +23,19 @@ steps:
     command: 'test'
     arguments: '--collect "Code coverage"'
   displayName: 'dotnet test'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'pack'
+    packagesToPack: '**/*.csproj'
+    versioningScheme: 'off'
+    buildProperties: '-p:PackageVersion=0.$(Build.BuildId).0'
+  displayName: 'dotnet pack'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'nuget'
+  displayName: 'dotnet push nuget'
