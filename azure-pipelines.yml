@@ -36,7 +36,7 @@ steps:
     command: 'pack'
     packagesToPack: 'TGSP.Shared/TGSP.Shared.csproj'
     versioningScheme: 'off'
-    buildProperties: '-p:PackageVersion=0.$(Build.BuildId).0'
+    buildProperties: '  PackageVersion=0.$(Build.BuildId).0'
   displayName: 'dotnet pack'
 
 - task: DotNetCoreCLI@2
