@@ -7,6 +7,13 @@ variables:
   tag: '$(Build.BuildId)'
 
 steps:
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.1.3'
+  displayName: 'dotnet set version'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
@@ -27,7 +34,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'pack'
-    packagesToPack: '**/*.csproj'
+    packagesToPack: 'TGSP.Shared/TGSP.Shared.csproj'
     versioningScheme: 'off'
     buildProperties: '-p:PackageVersion=0.$(Build.BuildId).0'
   displayName: 'dotnet pack'
