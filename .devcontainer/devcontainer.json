@@ -11,7 +11,10 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"dbaeumer.vscode-eslint"
+		"ms-vscode.csharp",
+		"ms-dotnettools.csharp",
+		"k--kato.docomment",
+		"streetsidesoftware.code-spell-checker"
 	],
 
 	// Set some runtime arguments 
