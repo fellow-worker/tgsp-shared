@@ -37,12 +37,13 @@ steps:
     packagesToPack: 'TGSP.Shared/TGSP.Shared.csproj'
     versioningScheme: 'off'
     buildProperties: '  PackageVersion=0.$(Build.BuildId).0'
+    includesymbols: true
+    includesource: true
   displayName: 'dotnet pack'
 
-- task: DotNetCoreCLI@2
+- task: NuGetCommand@2
   inputs:
     command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
     nuGetFeedType: 'external'
     publishFeedCredentials: 'nuget'
-  displayName: 'dotnet push nuget'
