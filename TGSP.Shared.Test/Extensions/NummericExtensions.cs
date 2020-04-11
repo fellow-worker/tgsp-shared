@@ -1,17 +1,12 @@
 using TGSP.Shared.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace TGSP.Shared.Test.Extensions
 {
-    /// <summary>
-    /// This class tests the extensions on numerics
-    /// </summary>
     [TestClass]
     public class NumericExtensionsTest
     {
-        /// <summary>
-        /// this method test the almost equals method for a double
-        /// </summary>
         [TestMethod]
         public void DoubleAlmostEqualsTest()
         {
@@ -62,9 +57,6 @@ namespace TGSP.Shared.Test.Extensions
 
         }
 
-        /// <summary>
-        /// this method test the almost equals method for a float
-        /// </summary>
         [TestMethod]
         public void FloatAlmostEqualsTest()
         {
@@ -114,9 +106,6 @@ namespace TGSP.Shared.Test.Extensions
             Assert.IsTrue(f2.AlmostEquals(f2 - NumericExtensions.DeltaFloat / 2));
         }
 
-        /// <summary>
-        /// this method test the almost equals method for a double
-        /// </summary>
         [TestMethod]
         public void DecimalAlmostEqualsTest()
         {
@@ -165,6 +154,30 @@ namespace TGSP.Shared.Test.Extensions
             Assert.IsTrue(d1.AlmostEquals(d1 - NumericExtensions.DeltaDecimal / 25));
             Assert.IsTrue(d2.AlmostEquals(d2 - NumericExtensions.DeltaDecimal / 25));
 
+        }
+    
+        [TestMethod]
+        public void ByteEqualsTest()
+        {
+            var random = new Random();
+            var arrayA = new byte[16];
+            var arrayB = new byte[16];
+            var arrayC = new byte[32];
+            var arrayD = new byte[128];
+
+            random.NextBytes(arrayA);
+            random.NextBytes(arrayB);
+            random.NextBytes(arrayC);
+            random.NextBytes(arrayD);
+
+            Assert.IsTrue(arrayA.ByteEquals(arrayA));
+            Assert.IsTrue(arrayB.ByteEquals(arrayB));
+            Assert.IsTrue(arrayC.ByteEquals(arrayC));
+            Assert.IsTrue(arrayD.ByteEquals(arrayD));
+
+            Assert.IsFalse(arrayA.ByteEquals(arrayB));
+            Assert.IsFalse(arrayA.ByteEquals(arrayC));
+            Assert.IsFalse(arrayA.ByteEquals(arrayD));
         }
     }
 }

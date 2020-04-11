@@ -12,7 +12,7 @@ namespace TGSP.Shared.Security
     /// <summary>
     /// This this the authentication handler that deals with a bearer token in the authorization header
     /// </summary>
-    public class AuthenticationTokenHandler : AuthenticationHandler<AuthenticationTokenOptions>
+    public sealed class AuthenticationTokenHandler : AbstractTokenHandler<TokenData>
     {
         /// <summary>
         /// This is the scheme name that is being used
@@ -22,7 +22,7 @@ namespace TGSP.Shared.Security
         /// <summary>
         /// This is the provider that will help to deal with the token
         /// </summary>
-        public readonly ITokenProvider TokenProvider;
+        private readonly ITokenProvider TokenProvider;
 
         /// <summary>
         /// The constructor that will be called when need
@@ -32,62 +32,31 @@ namespace TGSP.Shared.Security
         /// <param name="logger">required for base</param>
         /// <param name="encoder">required for base</param>
         /// <param name="clock">required for base</param>
-        public AuthenticationTokenHandler(ITokenProvider tokenProvider, IOptionsMonitor<AuthenticationTokenOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
+        public AuthenticationTokenHandler(ITokenProvider tokenProvider, IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock)
             : base(options, logger, encoder, clock)
         {
             TokenProvider = tokenProvider;
         }
 
         /// <summary>
-        /// This method will handle the actual authentication
+        /// This method will return the scheme name.
+        /// The token in the header string be prefixed with {SchemeName: }
         /// </summary>
-        /// <returns>The result of the authentication</returns>
-        protected override Task<AuthenticateResult> HandleAuthenticateAsync()
-        {
-            // First a few basic checks
-            if(Request == null) return NoResult();
-            if(Request.Headers == null) return NoResult();
-            if(Request.Headers.ContainsKey("Authorization") == false) return NoResult();
-
-            // Now get the header
-            var header = Request.Headers["Authorization"];
-            var (result, token) = ProcessHeader(header);
-
-            switch(result)
-            {
-                case TokenValidationResult.NoResult : return NoResult();
-                case TokenValidationResult.Success: return Success(token);
-                default: return Failed(result);
-            }
-        }
+        protected override string GetSchemeName() => SchemeName;
 
         /// <summary>
-        /// This method will process the header and return the result
+        /// This method should process the token and returns if it valid
         /// </summary>
-        /// <param name="header"></param>
-        /// <returns></returns>
-        private (TokenValidationResult, TokenData) ProcessHeader(String header)
-        {
-            // First, check for an empty header
-            if(string.IsNullOrEmpty(header) == true) return (TokenValidationResult.NoResult, null);
-
-            // Next, we are expecting two parts, one with the scheme and one with the token
-            var parts = header.Split(' ');
-            if(parts.Length != 2) return (TokenValidationResult.NoResult, null);
-
-            // Third, check if the token is matching our scheme
-            if(parts[0].ToLower() != SchemeName.ToLower()) return (TokenValidationResult.NoResult, null);
-
-            // And use the token provider for validation
-            return TokenProvider.Validate(parts[1]);
-        }
+        /// <param name="token"></param>
+        protected override (TokenValidationResult, TokenData) IsAuthorized(String token)
+            => TokenProvider.Validate(token);
 
         /// <summary>
         /// This method will create a success result and setting the identity and claims
         /// </summary>
         /// <param name="token"></param>
         /// <returns></returns>
-        private Task<AuthenticateResult> Success(TokenData token)
+        protected override Task<AuthenticateResult> Success(TokenData token)
         {
             var claims = new List<Claim>();
             claims.Add(new Claim("UserId",token.User));
@@ -101,30 +70,5 @@ namespace TGSP.Shared.Security
             var result = AuthenticateResult.Success(ticket);
             return Task.FromResult(result);
         }
-
-        /// <summary>
-        /// this method will return a no result
-        /// </summary>
-        /// <returns></returns>
-        private Task<AuthenticateResult> NoResult()
-        {
-            return Task.FromResult<AuthenticateResult>(AuthenticateResult.NoResult());
-        }
-
-        /// <summary>
-        /// This method will return a failed authentication
-        /// </summary>
-        /// <param name="reason"></param>
-        /// <returns></returns>
-        private Task<AuthenticateResult> Failed(TokenValidationResult reason)
-        {
-            return Task.FromResult<AuthenticateResult>(AuthenticateResult.Fail(reason.ToString()));
-        }
     }
-
-
-    /// <summary>
-    /// Class needed for the implementation
-    /// </summary>
-    public class AuthenticationTokenOptions : AuthenticationSchemeOptions { }
 }

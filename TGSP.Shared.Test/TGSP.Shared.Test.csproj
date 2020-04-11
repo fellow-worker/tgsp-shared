@@ -5,7 +5,7 @@
     <OutputType>Library</OutputType>
     <IsPackable>true</IsPackable>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <ProjectReference Include="..\TGSP.Shared\TGSP.Shared.csproj" />
   </ItemGroup>
@@ -19,6 +19,8 @@
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
+    <PackageReference Include="Moq" Version="4.13.1" />
+    <PackageReference Include="RichardSzalay.MockHttp" Version="6.0.0" />
   </ItemGroup>
 
 </Project>

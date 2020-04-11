@@ -5,6 +5,6 @@ namespace TGSP.Shared.Security
     /// </summary>
     public enum TokenValidationResult
     {
-        NoResult, Success, FormatError, Expired, SignatureError,
+        NoResult, Success, FormatError, Expired, SignatureError, ContextError
     }
 }

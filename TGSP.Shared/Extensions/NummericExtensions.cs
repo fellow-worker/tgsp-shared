@@ -78,5 +78,21 @@ namespace TGSP.Shared.Extensions
             var epoch = new DateTime(1970, 1, 1,0,0,0,DateTimeKind.Utc);
             return epoch.AddSeconds(value);
         }
+
+        /// <summary>
+        /// Implements a fairly simple equals method for bytes
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="that"></param>
+        /// <returns></returns>
+        public static bool ByteEquals(this byte[] a, byte[] that)
+        {
+            if(a.Length != that.Length) return false;
+            for(var i = 0; i < a.Length; i++)
+            {
+                if(a[i] != that[i]) return false;
+            }
+            return true;
+        }
     }
 }
