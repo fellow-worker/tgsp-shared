@@ -13,7 +13,7 @@ namespace TGSP.Shared.Security
         /// <summary>
         /// This is the object that can generate signatures for tokens
         /// </summary>
-        private readonly ITokenCryptoServiceProvider CryptoServiceProvider;
+        protected readonly ITokenCryptoServiceProvider CryptoServiceProvider;
 
         /// <summary>
         /// Creates a new token provider

@@ -39,6 +39,29 @@ namespace TGSP.Shared.Mongo
             DatabaseProvider.GetDatabase().GetCollection<T>(CollectionName);
 
         /// <summary>
+        /// This method will return the collection to deal with
+        /// </summary>
+        /// <param name="collectionName">The name of the collection</param>
+        /// <returns></returns>
+        protected IMongoCollection<T> GetCollection(string collectionName) =>
+            DatabaseProvider.GetDatabase().GetCollection<T>(collectionName);
+
+        /// <summary>
+        /// This method will return the collection to deal with
+        /// </summary>
+        /// <returns>A collection of untyped bson document</returns>
+        protected IMongoCollection<BsonDocument> GetBsonCollection() =>
+            DatabaseProvider.GetDatabase().GetCollection<BsonDocument>(CollectionName);
+
+        /// <summary>
+        /// his method will return the collection to deal with
+        /// </summary>
+        /// <param name="collectionName">The name of the collection</param>
+        /// <returns>A collection of untyped bson document</returns>
+        protected IMongoCollection<BsonDocument> GetBsonCollection(string collectionName) =>
+            DatabaseProvider.GetDatabase().GetCollection<BsonDocument>(collectionName);
+
+        /// <summary>
         /// This method will return the collection as queryable so linq can be used
         /// </summary>
         /// <returns></returns>
