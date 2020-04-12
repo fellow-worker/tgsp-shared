@@ -12,7 +12,7 @@ namespace TGSP.Shared.Services.ServiceInformation
 
         /// <summary>
         /// This hold a shared secret for backend services.
-        /// Which this secret backend services can communicate among each other 
+        /// Which this secret backend services can communicate among each other
         /// </summary>
         public string SharedSecret { get; set; }
 

@@ -11,7 +11,7 @@ namespace TGSP.Shared.Services.ServiceInformation
         public string Name { get; set; }
 
         /// <summary>
-        /// The origin of the service, 
+        /// The origin of the service,
         /// can be used to contact the service, but also for validating if it is allowed origin
         /// </summary>
         public string Origin { get; set; }

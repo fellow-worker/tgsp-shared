@@ -3,12 +3,12 @@ using System.Collections.Generic;
 namespace TGSP.Shared.Services.ServiceInformation
 {
     /// <summary>
-    /// This interface defines the 
+    /// This interface defines the
     /// </summary>
     public interface IServiceInformationProvider
     {
         /// <summary>
-        /// This method will return a list of services 
+        /// This method will return a list of services
         /// </summary>
         List<Service> GetServices();
 

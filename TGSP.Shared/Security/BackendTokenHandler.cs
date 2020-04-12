@@ -22,7 +22,7 @@ namespace TGSP.Shared.Security
         /// <summary>
         /// This service provider will return services and options
         /// </summary>
-        private readonly IServiceInformationProvider ServiceInformationProvider; 
+        private readonly IServiceInformationProvider ServiceInformationProvider;
 
         /// <summary>
         /// Holds options to validate tokens
@@ -67,7 +67,7 @@ namespace TGSP.Shared.Security
         }
 
         /// <summary>
-        /// This 
+        /// This method will valid the origin
         /// </summary>
         /// <returns></returns>
         private bool IsValidOrigin()

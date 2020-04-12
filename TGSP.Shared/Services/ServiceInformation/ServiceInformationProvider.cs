@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 
@@ -15,7 +14,7 @@ namespace TGSP.Shared.Services.ServiceInformation
         /// <summary>
         /// This is the key used for cache retrieval.
         /// </summary>
-        internal const string CachingKey = "/shared/services/information"; 
+        internal const string CachingKey = "/shared/services/information";
 
         /// <summary>
         /// In this cache the retrieved information is stored

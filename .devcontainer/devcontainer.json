@@ -15,9 +15,10 @@
 		"ms-dotnettools.csharp",
 		"k--kato.docomment",
 		"streetsidesoftware.code-spell-checker",
-		"shardulm94.trailing-spaces"
+		"shardulm94.trailing-spaces",
+		"formulahendry.dotnet-test-explorer"
 	],
 
-	// Set some runtime arguments 
+	// Set some runtime arguments
 	"runArgs": ["--name", "tgsp-shared-dev-container"],
 }
