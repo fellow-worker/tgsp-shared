@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace TGSP.Shared.Services.ServiceInformation
 {
     /// <summary>
@@ -5,11 +7,6 @@ namespace TGSP.Shared.Services.ServiceInformation
     /// </summary>
     public class ServiceInformationOptions
     {
-        /// <summary>
-        /// This method will hold the url that is required to talk with the graph endpoint
-        /// </summary>
-        public string GraphUrl { get; set; }
-
         /// <summary>
         /// This hold a shared secret for backend services.
         /// Which this secret backend services can communicate among each other
@@ -28,5 +25,10 @@ namespace TGSP.Shared.Services.ServiceInformation
         /// Since often service are in docker or using a proxy, defering the origin via the hosting environment is not reliable
         /// </remarks>
         public string Origin { get; set; }
+
+        /// <summary>
+        /// Holds a list of services that are either used or using this service
+        /// </summary>
+        public List<Service> Services { get; set; }
     }
 }

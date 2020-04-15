@@ -15,7 +15,6 @@ namespace TGSP.Shared.Services.ServiceInformation
         public void AddServiceInformationLoader(IServiceCollection services)
         {
             services.AddSingleton<IServiceInformationProvider, ServiceInformationProvider>();
-            services.AddHostedService<ServiceInformationLoader>();
         }
     }
 }

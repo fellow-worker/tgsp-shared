@@ -12,19 +12,6 @@ namespace TGSP.Shared.Services.ServiceInformation
     public sealed class ServiceInformationProvider : AbstractServiceInformationProvider, IServiceInformationProvider
     {
         /// <summary>
-        /// This is the key used for cache retrieval.
-        /// </summary>
-        internal const string CachingKey = "/shared/services/information";
-
-        /// <summary>
-        /// In this cache the retrieved information is stored
-        /// </summary>
-        /// <remarks>
-        /// The default microsoft implementation is thread safe, that is a requirement!
-        /// </remarks>
-        private readonly IMemoryCache Cache;
-
-        /// <summary>
         /// Holds the options that are set
         /// </summary>
         private readonly ServiceInformationOptions Options;
@@ -33,19 +20,15 @@ namespace TGSP.Shared.Services.ServiceInformation
         /// Creates a new service information provider
         /// </summary>
         /// <param name="cache"></param>
-        public ServiceInformationProvider(IMemoryCache cache, IOptions<ServiceInformationOptions> options)
+        public ServiceInformationProvider(IOptions<ServiceInformationOptions> options)
         {
-            Cache = cache;
             Options = options.Value;
         }
 
         /// <inheritdoc />
         public override List<Service> GetServices()
         {
-            if(Cache == null) return null;
-            var present = Cache.TryGetValue<List<Service>>(CachingKey, out var services);
-            if(present == false) return null;
-            return services;
+            return Options.Services;
         }
 
         /// <inheritdoc />

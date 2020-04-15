@@ -16,13 +16,10 @@ namespace TGSP.Shared.Test.Services.ServiceInformation
         {
             var services = new ServiceCollection();
             var serviceOptions = new ServiceInformationOptions();
-            var logger = new Testing.Logger<ServiceInformationLoader>();
 
             services.AddSingleton<IMemoryCache>(new MemoryCache(Options.Create(new MemoryCacheOptions())));
             services.AddSingleton<IOptions<ServiceInformationOptions>>(Options.Create(serviceOptions));
             services.AddSingleton<IHttpClientCreator>(new HttpClientCreator());
-            services.AddSingleton<ILogger<ServiceInformationLoader>>(logger);
-
 
             var factory = new ServiceInformationFactory();
             factory.AddServiceInformationLoader(services);
@@ -32,15 +29,6 @@ namespace TGSP.Shared.Test.Services.ServiceInformation
 
             Assert.IsNotNull(provider);
             Assert.IsNotNull(provider.GetOptions());
-
-            Assert.AreEqual(6, services.Count);
-            var enumerator = services.GetEnumerator();
-            var hasServiceInformationLoader = false;
-            while(enumerator.MoveNext())
-            {
-                if(enumerator.Current.ImplementationType?.Equals(typeof(ServiceInformationLoader)) == true) hasServiceInformationLoader = true;
-            }
-            Assert.IsTrue(hasServiceInformationLoader);
         }
 
     }

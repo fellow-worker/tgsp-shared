@@ -9,6 +9,9 @@ using TGSP.Shared.Services.ServiceInformation;
 
 namespace TGSP.Shared.Services.Connectors
 {
+    /// <summary>
+    /// This is the backend connector, it helps with connecting to other api's
+    /// </summary>
     public class BackendConnector
     {
         /// <summary>
@@ -87,6 +90,25 @@ namespace TGSP.Shared.Services.Connectors
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await client.PutAsync(BaseUrl + url, content);
             return await GetResponse<TResponse>(response);
+        }
+
+
+        /// <summary>
+        /// This method will put a body to the given url
+        /// </summary>
+        /// <typeparam name="TRequest">The type of the object to be send</typeparam>
+
+        /// <param name="url">The url for to which the data to be send (relative url!)</param>
+        /// <param name="body">The data to send</param>
+        /// <returns>A data received</returns>
+        public async Task<HttpStatusCode> PutAsync<TRequest>(string url, TRequest body)
+        {
+            var client = CreateClient();
+            var options = Json.JsonOptions.GetDefaultOptions();
+            var json = JsonSerializer.Serialize(body, options);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var response = await client.PutAsync(BaseUrl + url, content);
+            return response.StatusCode;
         }
 
         /// <summary>
